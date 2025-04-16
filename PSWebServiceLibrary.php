@@ -47,7 +47,7 @@ class PrestaShopWebservice
     /** @var string Minimal version of PrestaShop to use with this library */
     const psCompatibleVersionsMin = '1.4.0.0';
     /** @var string Maximal version of PrestaShop to use with this library */
-    const psCompatibleVersionsMax = '8.2.0';
+    const psCompatibleVersionsMax = '9.2.0';
 
     /**
      * PrestaShopWebservice constructor. Throw an exception when CURL is not installed/activated
@@ -131,7 +131,7 @@ class PrestaShopWebservice
             $errors = $response->children()->children();
             if ($errors && count($errors) > 0) {
                 foreach ($errors as $error) {
-                    $error_message.= ' - (Code ' . $error->code . '): ' . $error->message;
+                    $error_message .= ' - (Code ' . $error->code . '): ' . $error->message;
                 }
             }
             $error_label = 'This call to PrestaShop Web Services failed and returned an HTTP status of %d. That means: %s.';
@@ -284,7 +284,7 @@ class PrestaShopWebservice
                 libxml_disable_entity_loader(true);
             }
 
-            $xml = simplexml_load_string(trim($response), 'SimpleXMLElement', LIBXML_NOCDATA|LIBXML_NONET);
+            $xml = simplexml_load_string(trim($response), 'SimpleXMLElement', LIBXML_NOCDATA | LIBXML_NONET);
             if (libxml_get_errors()) {
                 $msg = var_export(libxml_get_errors(), true);
                 libxml_clear_errors();
@@ -389,7 +389,7 @@ class PrestaShopWebservice
 
         $request = $this->executeRequest($url, array(CURLOPT_CUSTOMREQUEST => 'GET'));
 
-        $this->checkStatusCode($request);// check the response validity
+        $this->checkStatusCode($request); // check the response validity
 
         return $this->parseXML($request['response']);
     }
@@ -428,7 +428,7 @@ class PrestaShopWebservice
             throw new PrestaShopWebserviceException('Bad parameters given');
         }
         $request = $this->executeRequest($url, array(CURLOPT_CUSTOMREQUEST => 'HEAD', CURLOPT_NOBODY => true));
-        $this->checkStatusCode($request);// check the response validity
+        $this->checkStatusCode($request); // check the response validity
         return $request['header'];
     }
 
@@ -465,7 +465,7 @@ class PrestaShopWebservice
         }
 
         $request = $this->executeRequest($url, array(CURLOPT_CUSTOMREQUEST => 'PUT', CURLOPT_POSTFIELDS => $xml));
-        $this->checkStatusCode($request);// check the response validity
+        $this->checkStatusCode($request); // check the response validity
         return $this->parseXML($request['response']);
     }
 
@@ -516,15 +516,12 @@ class PrestaShopWebservice
         }
 
         $request = $this->executeRequest($url, array(CURLOPT_CUSTOMREQUEST => 'DELETE'));
-        $this->checkStatusCode($request);// check the response validity
+        $this->checkStatusCode($request); // check the response validity
         return true;
     }
-
 }
 
 /**
  * @package PrestaShopWebservice
  */
-class PrestaShopWebserviceException extends Exception
-{
-}
+class PrestaShopWebserviceException extends Exception {}
